@@ -1,6 +1,5 @@
 #include "rev1.h"
 
-#define NO_ENTRY { 0, 0 }
 typedef struct PACKED {
     uint8_t r;
     uint8_t c;
@@ -8,18 +7,21 @@ typedef struct PACKED {
 
 // this maps encoders and then touch encoders to their respective electrical matrix entry
 // mapping is row (y) then column (x) when looking at the electrical layout
-const encodermap_t encoder_map[NUMBER_OF_ENCODERS + NUMBER_OF_TOUCH_ENCODERS][TOUCH_ENCODER_OPTIONS] = 
+const encodermap_t encoder_map[NUMBER_OF_ENCODERS][ENCODER_OPTIONS] = 
 {
-    { {  5, 0 }, {  5, 1 },  NO_ENTRY,  NO_ENTRY,  NO_ENTRY }, // Encoder 1 matrix entries
-    { {  5, 2 }, {  5, 3 },  NO_ENTRY,  NO_ENTRY,  NO_ENTRY }, // Encoder 2 matrix entries
-    { { 12, 0 }, { 12, 1 },  NO_ENTRY,  NO_ENTRY,  NO_ENTRY }, // Encoder 3 matrix entries
-    { { 12, 2 }, { 12, 3 },  NO_ENTRY,  NO_ENTRY,  NO_ENTRY }, // Encoder 4 matrix entries
-    { {  6, 0 }, {  6, 1 }, {  6, 2 }, {  6, 3 }, {  6, 4 } }, // Touch Encoder 1 matrix entries
-    { { 13, 0 }, { 13, 1 }, { 13, 2 }, { 13, 3 }, { 13, 4 } }  // Touch Encoder 2 matrix entries
+    { {  5, 0 }, {  5, 1 } }, // Encoder 1 matrix entries
+    { {  5, 2 }, {  5, 3 } }, // Encoder 2 matrix entries
+    { { 12, 0 }, { 12, 1 } }, // Encoder 3 matrix entries
+    { { 12, 2 }, { 12, 3 } }, // Encoder 4 matrix entries
 }; 
 
-static void process_encoder_matrix(uint8_t index, uint8_t event) {
-    encodermap_t pos = encoder_map[index][event];
+const encodermap_t touch_encoder_map[NUMBER_OF_ENCODERS + NUMBER_OF_TOUCH_ENCODERS][TOUCH_ENCODER_OPTIONS] = 
+{
+    { {  6, 0 }, {  6, 1 }, {  6, 2 }, {  6, 3 }, {  6, 4 } }, // Touch Encoder 1 matrix entries
+    { { 13, 0 }, { 13, 1 }, { 13, 2 }, { 13, 3 }, { 13, 4 } }  // Touch Encoder 2 matrix entries
+};
+
+static void process_encoder_matrix(encodermap_t pos) {
     action_exec((keyevent_t){
         .key = (keypos_t){.row = pos.r, .col = pos.c}, .pressed = true, .time = (timer_read() | 1) /* time should not be 0 */
     });
@@ -33,16 +35,16 @@ static void process_encoder_matrix(uint8_t index, uint8_t event) {
 
 void encoder_update_kb(uint8_t index, bool clockwise) {
     // Mapping clockwise (typically increase) to zero, and counter clockwise (decrease) to 1
-    process_encoder_matrix(index, clockwise ? 0 : 1);
+    process_encoder_matrix(encoder_map[index][clockwise ? 0 : 1]);
 }
 
 void touch_encoder_update_kb(uint8_t index, bool clockwise) {
     // Mapping clockwise (typically increase) to zero, and counter clockwise (decrease) to 1
-    process_encoder_matrix(index + NUMBER_OF_ENCODERS, clockwise ? 0 : 1);
+    process_encoder_matrix(touch_encoder_map[index][clockwise ? 0 : 1]);
 }
 
 void touch_encoder_tapped_kb(uint8_t index, uint8_t section) {
-    process_encoder_matrix(index + NUMBER_OF_ENCODERS, section + 2);
+    process_encoder_matrix(touch_encoder_map[index][section + 2]);
 }
 
 #ifdef RGB_MATRIX_ENABLE
