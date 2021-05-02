@@ -29,8 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define USB_POLLING_INTERVAL_MS 1
 
 /* Matrix Configuration - Rows are doubled up */
-#define MATRIX_ROWS 10
-#define MATRIX_ROW_PINS { A1, A3, B3, A13, B15 }
+#define MATRIX_ROWS 14
+// B1, A2 reserved for encoder / touch encoder support
+#define MATRIX_ROW_PINS { A1, A3, B3, A13, B15, B1, A2 }
 #define MATRIX_COLS 7
 #define MATRIX_COL_PINS { A0, B11, B0, B10, B12, B2, A8 }
 #define MATRIX_IO_DELAY 5
