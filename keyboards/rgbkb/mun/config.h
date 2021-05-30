@@ -55,8 +55,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DIODE_DIRECTION COL2ROW
 
 /* CRC Configuration */
-#define CRC8_OPTIMIZE_SPEED
-#define CRC8_USE_TABLE
+//#define CRC8_OPTIMIZE_SPEED
+//#define CRC8_USE_TABLE
 
 /* Split Keyboard Configuration */
 #define EE_HANDS
@@ -70,7 +70,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define SERIAL_USART_PIN_SWAP
     #define SERIAL_USART_DRIVER UARTD1
     #define SERIAL_USART_RX_PAL_MODE 7
-    #define SERIAL_USART_SPEED (STM32_PCLK2 >> 4)  // Use highest possible baudrate (4.5Mbit) without oversampling by 8. Lower if timeouts occur.
+    #define SERIAL_USART_SPEED (1 * 1024 * 1024)
 #else
     #define SOFT_SERIAL_PIN A9
     #define SERIAL_USART_DRIVER SD1
