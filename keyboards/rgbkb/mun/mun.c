@@ -16,3 +16,11 @@ void housekeeping_task_kb(void)
     touch_encoder_update(TOUCH_ENCODER_SYNC);
     rgb_menu_update(RGB_MENU_SYNC);
 }
+
+#if defined(BUSY_WAIT)
+void matrix_output_unselect_delay(void) {
+    for (int32_t i = 0; i < BUSY_WAIT_INSTRUCTIONS; i++) {
+        __asm__ volatile("nop" ::: "memory");
+    }
+}
+#endif

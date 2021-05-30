@@ -37,6 +37,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MATRIX_COL_PINS { A0, B11, B0, B10, B12, B2, A8 }
 #define MATRIX_IO_DELAY 5
 
+#define BUSY_WAIT
+#define BUSY_WAIT_INSTRUCTIONS 35 // Increase if two rows are pressed at the same time.
+#define GPIO_INPUT_PIN_DELAY 10
+
 /* Touchbar adjustments */
 #define TOUCH_DEADZONE 50 // width of a "button", wider inputs will be interpreted as a swipe
 #define TOUCH_TERM 350 // time of a "button" touch, longer inputs will be a swipe
@@ -50,11 +54,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* COL2ROW or ROW2COL */
 #define DIODE_DIRECTION COL2ROW
 
+/* CRC Configuration */
+#define CRC8_OPTIMIZE_SPEED
+#define CRC8_USE_TABLE
+
 /* Split Keyboard Configuration */
 #define EE_HANDS
 #define SPLIT_USB_DETECT
 #define SPLIT_TRANSPORT_MIRROR
-#define SERIAL_USART_SPEED (1 * 1024 * 1024)
 #define SERIAL_USART_TX_PAL_MODE 7
 #define SERIAL_USART_TIMEOUT 5
 #if USE_FULL_DUPLEX
@@ -63,9 +70,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define SERIAL_USART_PIN_SWAP
     #define SERIAL_USART_DRIVER UARTD1
     #define SERIAL_USART_RX_PAL_MODE 7
+    #define SERIAL_USART_SPEED (STM32_PCLK2 >> 4)  // Use highest possible baudrate (4.5Mbit) without oversampling by 8. Lower if timeouts occur.
 #else
     #define SOFT_SERIAL_PIN A9
     #define SERIAL_USART_DRIVER SD1
+    #define SERIAL_USART_SPEED (1 * 1024 * 1024)
 #endif
 
 #define SPLIT_TRANSACTION_IDS_KB TOUCH_ENCODER_SYNC, RGB_MENU_SYNC
