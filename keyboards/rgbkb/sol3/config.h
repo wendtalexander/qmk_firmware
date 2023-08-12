@@ -78,8 +78,8 @@
 
 /* RGB LED Configuration */
 #define RGB_DI_PIN B5
-#define RGBLED_NUM 156
-#define RGBLED_SPLIT { 78, 78 }
+#define RGBLED_NUM 220
+#define RGBLED_SPLIT { 109, 109 }
 #define RGBLIGHT_LIMIT_VAL 255
 
 // RGB Lighting Animation modes. Explicitly enabled
