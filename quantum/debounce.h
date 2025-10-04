@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdint.h>
+#include <stdbool.h>
+#include "matrix.h"
+
 /**
  * @brief Debounce raw matrix events according to the choosen debounce algorithm.
  *
@@ -13,5 +17,3 @@
 bool debounce(matrix_row_t raw[], matrix_row_t cooked[], uint8_t num_rows, bool changed);
 
 void debounce_init(uint8_t num_rows);
-
-void debounce_free(void);
